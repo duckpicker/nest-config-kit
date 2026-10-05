@@ -1,6 +1,6 @@
 {
   "name": "@duckpicker/nest-config-kit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Typed env config with validation for NestJS",
   "license": "MIT",
   "type": "module",
@@ -19,7 +19,9 @@
       }
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
