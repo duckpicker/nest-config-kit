@@ -52,7 +52,7 @@
     "node": ">=22.0.0"
   },
   "bin": {
-    "nest-config-kit": "./dist/cli.js"
+    "nest-config-kit": "./dist/cli.cjs"
   },
   "dependencies": {
     "tsx": "^4.19.0"
