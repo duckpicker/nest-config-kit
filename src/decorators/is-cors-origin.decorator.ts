@@ -4,7 +4,7 @@ import {
   ValidatorConstraint,
   type ValidatorConstraintInterface,
 } from 'class-validator';
-import { isIP } from 'validator';
+import { isIP } from 'node:net';
 
 function isHostname(value: string): boolean {
   const re =
