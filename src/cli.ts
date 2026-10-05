@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 import { existsSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
-import { register } from 'tsx/esm/api';
+import { createRequire } from 'node:module';
 import type { Field } from './field/field.js';
 
-const unregister = register();
+const require = createRequire(import.meta.url);
 
 const SCHEMA_CANDIDATES = [
   'src/env.schema.ts',
@@ -32,11 +31,19 @@ async function main() {
 
   console.log(`→ Loading schema from ${schemaPath}`);
 
-  const mod = await import(pathToFileURL(schemaPath).href);
-  const envSchema = mod.envSchema as Record<string, Field<unknown>> | undefined;
+  const tsx = require('tsx/cjs/api');
+  const unregister = tsx.register();
+
+  let envSchema: Record<string, Field<unknown>> | undefined;
+  try {
+    const mod = tsx.require(schemaPath, __filename);
+    envSchema = mod.envSchema;
+  } finally {
+    unregister();
+  }
 
   if (!envSchema || typeof envSchema !== 'object') {
-    console.error(`[X] ${schemaPath} does not export "envSchema"`);
+    console.error(`✗ ${schemaPath} does not export "envSchema"`);
     process.exit(1);
   }
 
@@ -44,9 +51,7 @@ async function main() {
   const content = generate(envSchema);
   writeFileSync(outputPath, content, 'utf8');
 
-  console.log(`[V] Generated ${outputPath}`);
-
-  unregister();
+  console.log(`✓ Generated ${outputPath}`);
 }
 
 function tsType(field: Field<unknown>): string {
@@ -126,6 +131,5 @@ export class EnvironmentVariables {
 
 main().catch((err) => {
   console.error(err);
-  unregister();
   process.exit(1);
 });
