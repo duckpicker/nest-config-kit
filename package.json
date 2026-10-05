@@ -44,10 +44,15 @@
     "class-validator": "^0.14.1",
     "reflect-metadata": "^0.2.2",
     "tsup": "^8.4.0",
-    "tsx": "^4.19.0",
     "typescript": "^5.7.0"
   },
   "engines": {
     "node": ">=22.0.0"
+  },
+  "bin": {
+    "nest-config-kit": "./dist/cli.js"
+  },
+  "dependencies": {
+    "tsx": "^4.19.0"
   }
 }

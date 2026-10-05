@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  entry: ['src/index.ts'],
+  entry: ['src/index.ts', 'src/cli.ts'],
   format: ['esm', 'cjs'],
   dts: true,
   sourcemap: true,
@@ -15,5 +15,6 @@ export default defineConfig({
     'class-transformer',
     'class-validator',
     'reflect-metadata',
+    'tsx',
   ],
 });
